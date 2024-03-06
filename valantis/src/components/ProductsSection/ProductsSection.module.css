@@ -1,0 +1,4 @@
+.ProductsSection {
+  display: flex;
+  flex-wrap: wrap;
+}

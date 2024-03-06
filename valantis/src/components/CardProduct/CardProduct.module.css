@@ -1,0 +1,20 @@
+.CardProduct {
+  display: flex;
+  flex-direction: column;
+}
+
+.CardProduct__id {
+
+}
+
+.CardProduct__price {
+  
+}
+
+.CardProduct__title {
+  
+}
+
+.CardProduct__brand {
+  
+}
