@@ -1,7 +1,7 @@
 import ProductsSection from './components/ProductsSection/ProductsSection';
 import Input from './components/UI/Input/Input';
 import './App.css';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import loadData from './utils/loadData';
 
 function App() {
@@ -11,27 +11,38 @@ function App() {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    // const filteredByNameProducts = useMemo(() => {
-    //     return products.filter((product) =>
-    //         product.title.toLowerCase().includes(searchNameQuery.toLowerCase())
-    //     );
-    // }, [searchNameQuery, products]);
+    function uniq(arr, getId) {
+        const result = [];
+        const set = new Set();
 
-    const newProducts = {
-        action: 'get_ids',
-        params: { offset: 0, limit: 10 },
-    };
+        arr.forEach((el) => {
+            const id = getId(el);
+            if (!set.has(id)) {
+                result.push(el);
+                set.add(id);
+            }
+        });
 
-    useEffect(() => {
+        return result;
+    }
+
+    function loadPage(offset, limit) {
+        const newProducts = {
+            action: 'get_ids',
+            params: { offset: offset, limit: limit },
+        };
+
         loadData(newProducts).then((data) => {
+            const uniqIds = uniq(data.result, (id) => id);
             const getItemsRequest = {
                 action: 'get_items',
-                params: { ids: data.result },
+                params: { ids: uniqIds },
             };
             setIsLoading(true);
             loadData(getItemsRequest)
-                .then((data) => {
-                    console.log(data.result);
+                .then((d) => {
+                    const uniqProducts = uniq(d.result, (p) => p.id);
+                    setProducts(uniqProducts);
                 })
                 .catch((err) => {
                     console.error(err.message + ' aaaaaaaaaa');
@@ -40,6 +51,10 @@ function App() {
                     setIsLoading(false);
                 });
         });
+    }
+
+    useEffect(() => {
+        loadPage(0, 50);
     }, []);
 
     return (
@@ -50,7 +65,7 @@ function App() {
                 onChange={(event) => setSearchNameQuery(event.target.value)}
             />
             {isLoading && <p>loading...</p>}
-            <ProductsSection products={products} />
+            <ProductsSection products={products} isLoading={isLoading}/>
         </>
     );
 }
