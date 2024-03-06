@@ -1,4 +1,6 @@
 import ProductsSection from './components/ProductsSection/ProductsSection';
+import FiltersSection from './components/FiltersSection/FiltersSection';
+import PageLayout from './components/PageLayout/PageLayout';
 import Input from './components/UI/Input/Input';
 import './App.css';
 import { useEffect, useState } from 'react';
@@ -7,7 +9,11 @@ import loadData from './utils/loadData';
 function App() {
     const [products, setProducts] = useState([]);
 
-    const [searchNameQuery, setSearchNameQuery] = useState('');
+    const [filterNameQuery, setFilterNameQuery] = useState('');
+
+    const [filterPriceQuery, setFilterPriceQuery] = useState('');
+
+    const [filterBrandQuery, setFilterBrandQuery] = useState('');
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -58,15 +64,35 @@ function App() {
     }, []);
 
     return (
-        <>
-            <Input
-                placeholder={'search'}
-                value={searchNameQuery}
-                onChange={(event) => setSearchNameQuery(event.target.value)}
-            />
-            {isLoading && <p>loading...</p>}
-            <ProductsSection products={products} isLoading={isLoading}/>
-        </>
+        <PageLayout>
+            <FiltersSection>
+                <Input
+                    value={filterNameQuery}
+                    onChange={(event) => setFilterNameQuery(event.target.value)}
+                    id="filter-name"
+                    htmlFor="filter-name"
+                    text="по названию:&nbsp;"
+                />
+                <Input
+                    value={filterPriceQuery}
+                    onChange={(event) => setFilterPriceQuery(event.target.value)}
+                    id="filter-price"
+                    htmlFor="filter-price"
+                    text="по цене:&nbsp;"
+                />
+                <Input
+                    value={filterBrandQuery}
+                    onChange={(event) => setFilterBrandQuery(event.target.value)}
+                    id="filter-brand"
+                    htmlFor="filter-brand"
+                    text="по бренду:&nbsp;"
+                />
+            </FiltersSection>
+            <PageLayout>
+                {isLoading && <p>loading...</p>}
+                <ProductsSection products={products} isLoading={isLoading} />
+            </PageLayout>
+        </PageLayout>
     );
 }
 

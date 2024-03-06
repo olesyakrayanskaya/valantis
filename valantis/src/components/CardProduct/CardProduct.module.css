@@ -1,9 +1,20 @@
 .CardProduct {
   display: flex;
   flex-direction: column;
+  padding: 2rem;
+  border: 1px solid #d7d2d2;
+  border-radius: 0.5rem;
+  height: 15rem;
+  width: 13rem;
 }
 
 .CardProduct__id {
+
+}
+
+.CardProduct__img {
+  object-fit: contain;
+  object-position: center;
 
 }
 
