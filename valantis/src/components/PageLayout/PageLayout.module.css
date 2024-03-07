@@ -1,3 +1,4 @@
 .PageLayout {
   display: flex;
+  flex-direction: column;
 }

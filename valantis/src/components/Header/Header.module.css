@@ -1,0 +1,13 @@
+.Header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  height: 200px;
+  background-image: url('../../assets/images/bcg.jpg');
+  background-position: bottom;
+  background-size: cover;
+  width: 100%;
+  box-shadow: 0px 2px 6px 6px rgba(236, 235, 235, 0.451);
+}

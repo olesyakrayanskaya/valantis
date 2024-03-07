@@ -1,19 +1,19 @@
 import ProductsSection from './components/ProductsSection/ProductsSection';
 import FiltersSection from './components/FiltersSection/FiltersSection';
 import PageLayout from './components/PageLayout/PageLayout';
+import Header from './components/Header/Header';
 import Input from './components/UI/Input/Input';
 import './App.css';
 import { useEffect, useState } from 'react';
-import loadData from './utils/loadData';
+import loadData from './API/loadData';
+import Select from './components/UI/Select/Select';
 
 function App() {
     const [products, setProducts] = useState([]);
 
-    const [filterNameQuery, setFilterNameQuery] = useState('');
+    const [filterQuery, setFilterQuery] = useState('');
 
-    const [filterPriceQuery, setFilterPriceQuery] = useState('');
-
-    const [filterBrandQuery, setFilterBrandQuery] = useState('');
+    const [filterName, setFilterName] = useState('all');
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -59,34 +59,73 @@ function App() {
         });
     }
 
+    function loadPageFiltered(filterName, filterValue) {
+        const filteredProducts = {
+            action: 'filter',
+            params: { [filterName]: filterValue },
+        };
+
+        loadData(filteredProducts).then((data) => {
+            const uniqIds = uniq(data.result, (id) => id);
+            const getItemsRequest = {
+                action: 'get_items',
+                params: { ids: uniqIds },
+            };
+            setIsLoading(true);
+            loadData(getItemsRequest)
+                .then((d) => {
+                    const uniqProducts = uniq(d.result, (p) => p.id);
+                    setProducts(uniqProducts);
+                })
+                .catch((err) => {
+                    console.error(err.message + ' aaaaaaaaaa');
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        });
+    }
+
     useEffect(() => {
-        loadPage(0, 50);
-    }, []);
+        if (filterName !== 'all') {
+            if (filterName === 'price') {
+                loadPageFiltered(
+                    filterName,
+                    parseFloat(filterQuery.replaceAll(' ', ''))
+                );
+            }
+            loadPageFiltered(filterName, filterQuery);
+        } else {
+            loadPage(0, 50);
+        }
+    }, [filterName, filterQuery]);
 
     return (
         <PageLayout>
+            <Header></Header>
             <FiltersSection>
-                <Input
-                    value={filterNameQuery}
-                    onChange={(event) => setFilterNameQuery(event.target.value)}
-                    id="filter-name"
-                    htmlFor="filter-name"
-                    text="по названию:&nbsp;"
+                <Select
+                    options={[
+                        { value: 'all', name: 'показать все' },
+                        { value: 'product', name: 'по названию' },
+                        { value: 'price', name: 'по цене' },
+                        { value: 'brand', name: 'по бренду' },
+                    ]}
+                    value={filterName}
+                    onChange={(event) => {
+                        setFilterName(event.target.value);
+                    }}
+                    id="filter"
+                    labelText={'фильтр:'}
                 />
-                <Input
-                    value={filterPriceQuery}
-                    onChange={(event) => setFilterPriceQuery(event.target.value)}
-                    id="filter-price"
-                    htmlFor="filter-price"
-                    text="по цене:&nbsp;"
-                />
-                <Input
-                    value={filterBrandQuery}
-                    onChange={(event) => setFilterBrandQuery(event.target.value)}
-                    id="filter-brand"
-                    htmlFor="filter-brand"
-                    text="по бренду:&nbsp;"
-                />
+                {filterName !== 'all' && (
+                    <Input
+                        value={filterQuery}
+                        onChange={(event) => {
+                            setFilterQuery(event.target.value);
+                        }}
+                    />
+                )}
             </FiltersSection>
             <PageLayout>
                 {isLoading && <p>loading...</p>}

@@ -1,5 +1,6 @@
 import classes from './CardProduct.module.css';
 import product from '../../assets/images/product.jpeg'
+import { memo } from 'react';
 
 function CardProduct(props) {
     return (
@@ -18,4 +19,4 @@ function CardProduct(props) {
     );
 }
 
-export default CardProduct;
+export default memo(CardProduct);

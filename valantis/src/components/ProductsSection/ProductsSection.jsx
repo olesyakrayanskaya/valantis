@@ -1,5 +1,6 @@
 import classes from './ProductsSection.module.css';
 import CardProduct from '../CardProduct/CardProduct';
+import { memo } from 'react';
 
 function ProductsSection({ products, isLoading }) {
     let startKey = 0;
@@ -21,4 +22,4 @@ function ProductsSection({ products, isLoading }) {
     );
 }
 
-export default ProductsSection;
+export default memo(ProductsSection);

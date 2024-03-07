@@ -1,4 +1,5 @@
 import classes from './FiltersSection.module.css';
+import { memo } from 'react';
 
 function FiltersSection({children}) {
   return (
@@ -6,4 +7,4 @@ function FiltersSection({children}) {
   );
 }
 
-export default FiltersSection;
+export default memo(FiltersSection);
