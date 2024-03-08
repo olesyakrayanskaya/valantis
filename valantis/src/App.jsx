@@ -2,6 +2,7 @@ import ProductsSection from './components/ProductsSection/ProductsSection';
 import FiltersSection from './components/FiltersSection/FiltersSection';
 import PageLayout from './components/PageLayout/PageLayout';
 import Header from './components/Header/Header';
+import Logo from './components/Logo/Logo';
 import Loader from './components/Loader/Loader';
 import Input from './components/UI/Input/Input';
 import './App.css';
@@ -98,7 +99,7 @@ function App() {
 
     return (
         <>
-            <Header></Header>
+            <Header><Logo /></Header>
             <FiltersSection>
                 <Select
                     options={[

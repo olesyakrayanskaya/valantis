@@ -17,7 +17,7 @@ function ProductsSection({ products, isLoading }) {
                           brand={prod.brand}
                       />
                   ))
-                : !isLoading && <p>Sorry, no products</p>}
+                : !isLoading && <p>Простите, ничего не найдено :(</p>}
         </section>
     );
 }

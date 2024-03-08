@@ -1,3 +1,15 @@
 .Select {
-  
+  width: 180px;
+  height: 24px;
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.Select:focus, .Select:active {
+  outline: #60869c;
+}
+
+.Select__label {
+  font-weight: 500;
 }

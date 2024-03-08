@@ -4,7 +4,7 @@ import { memo } from 'react';
 function Select({ options, onChange, value, id, labelText }) {
     return (
         <>
-            <label htmlFor={id}>{labelText}&nbsp;</label>
+            <label className={classes.Select__label} htmlFor={id}>{labelText}&nbsp;</label>
             <select
                 id={id}
                 className={classes.Select}
