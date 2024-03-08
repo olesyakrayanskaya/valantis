@@ -1,7 +1,6 @@
 import getPassword from '../utils/getPassword';
 
 export default function loadData(request) {
-    console.log(new Date() + 'fetch start')
     return fetch('https://api.valantis.store:41000', {
         method: 'POST',
         body: JSON.stringify(request),
