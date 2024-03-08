@@ -2,6 +2,7 @@ import ProductsSection from './components/ProductsSection/ProductsSection';
 import FiltersSection from './components/FiltersSection/FiltersSection';
 import PageLayout from './components/PageLayout/PageLayout';
 import Header from './components/Header/Header';
+import Loader from './components/Loader/Loader';
 import Input from './components/UI/Input/Input';
 import './App.css';
 import { useEffect, useState } from 'react';
@@ -123,7 +124,7 @@ function App() {
                     />
                 )}
             </FiltersSection>
-            {isLoading && <p>loading...</p>}
+            {isLoading && <Loader />}
             {!isLoading && (
                 <PageLayout>
                     <ProductsSection
