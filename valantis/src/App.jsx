@@ -10,6 +10,8 @@ import Select from './components/UI/Select/Select';
 import Button from './components/UI/Button/Button';
 import Pagination from './components/Pagination/Pagination';
 import uniq from './utils/uniq';
+import prev from './assets/images/prev.png';
+import next from './assets/images/next.png';
 
 function App() {
     const [products, setProducts] = useState([]);
@@ -94,7 +96,7 @@ function App() {
     }, [filterName, filterQuery, pageNumber]);
 
     return (
-        <PageLayout>
+        <>
             <Header></Header>
             <FiltersSection>
                 <Select
@@ -140,7 +142,7 @@ function App() {
                                 isActive={pageNumber > 0}
                                 disabled={pageNumber === 0}
                             >
-                                prev
+                                <img src={prev} alt="button prev" width={100} height={30}/>
                             </Button>
                             <Button
                                 onClick={() => {
@@ -149,13 +151,13 @@ function App() {
                                 isActive={hasNext}
                                 disabled={!hasNext}
                             >
-                                next
+                                <img src={next} alt="button next" width={100} height={30}/>
                             </Button>
                         </Pagination>
                     )}
                 </PageLayout>
             )}
-        </PageLayout>
+        </>
     );
 }
 

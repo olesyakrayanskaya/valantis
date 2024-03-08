@@ -1,7 +1,23 @@
 .Btn {
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  width: 118px;
+  height: 32px;
+  border-radius: 12px;
+  font-size: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.Btn img {
+  -o-object-fit: contain;
+     object-fit: contain;
+  -o-object-position: center;
+     object-position: center;
 }
 
 .Btn_active {
-  background-color: aquamarine;
+  background-color: #dceef7; 
 }

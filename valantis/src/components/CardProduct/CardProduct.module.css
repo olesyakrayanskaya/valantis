@@ -1,31 +1,47 @@
 .CardProduct {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: 0.8rem;
   border: 1px solid #d7d2d2;
   border-radius: 0.5rem;
-  height: 15rem;
+  height: 24rem;
   width: 13rem;
+  background-color: #fff;
+  box-shadow: 1px 1px 8px 1px #59697942;
 }
 
 .CardProduct__id {
-
+  font-size: 0.7rem;
+  align-self: flex-end;
+  text-align: right;
+  display: block;
+  margin-top: auto;
 }
 
 .CardProduct__img {
   object-fit: contain;
   object-position: center;
-
+  align-self: center;
+  margin-bottom: 1.5rem;
 }
 
 .CardProduct__price {
-  
+  font-size: 1.2rem;
+  margin-bottom: 1rem; 
+  display: block;
+  height: 1.5rem;
 }
 
 .CardProduct__title {
-  
+  font-size: 1rem; 
+  text-align: left;
+  margin: 0 0 1rem 0;
+  height: 7rem;
+  overflow-y: hidden;
 }
 
 .CardProduct__brand {
-  
+  margin-bottom: 1rem; 
+  font-weight: 600; 
+  color: #596979;
 }
