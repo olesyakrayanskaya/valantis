@@ -7,6 +7,8 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import loadData from './API/loadData';
 import Select from './components/UI/Select/Select';
+import Button from './components/UI/Button/Button';
+import Pagination from './components/Pagination/Pagination';
 
 function App() {
     const [products, setProducts] = useState([]);
@@ -16,6 +18,12 @@ function App() {
     const [filterName, setFilterName] = useState('all');
 
     const [isLoading, setIsLoading] = useState(false);
+
+    const [pageNumber, setPageNumber] = useState(0);
+
+    const [hasNext, setHasNext] = useState(true);
+
+    const pageLimit = 50;
 
     function uniq(arr, getId) {
         const result = [];
@@ -44,6 +52,12 @@ function App() {
                 action: 'get_items',
                 params: { ids: uniqIds },
             };
+            if (uniqIds.length < pageLimit) {
+                setHasNext(false);
+            }
+            if (uniqIds.length === 0) {
+                setPageNumber(pageNumber - 1);
+            }
             setIsLoading(true);
             loadData(getItemsRequest)
                 .then((d) => {
@@ -96,9 +110,9 @@ function App() {
             }
             loadPageFiltered(filterName, filterQuery);
         } else {
-            loadPage(0, 50);
+            loadPage(pageNumber, pageLimit);
         }
-    }, [filterName, filterQuery]);
+    }, [filterName, filterQuery, pageNumber]);
 
     return (
         <PageLayout>
@@ -114,6 +128,7 @@ function App() {
                     value={filterName}
                     onChange={(event) => {
                         setFilterName(event.target.value);
+                        setFilterQuery('');
                     }}
                     id="filter"
                     labelText={'фильтр:'}
@@ -130,6 +145,29 @@ function App() {
             <PageLayout>
                 {isLoading && <p>loading...</p>}
                 <ProductsSection products={products} isLoading={isLoading} />
+                <Pagination>
+                    <Button
+                        onClick={() => {
+                            pageNumber > 0
+                                ? setPageNumber(pageNumber - 1)
+                                : setPageNumber(0);
+                            setHasNext(true);
+                        }}
+                        isActive={pageNumber > 0}
+                        disabled={pageNumber === 0}
+                    >
+                        prev
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setPageNumber(pageNumber + 1);
+                        }}
+                        isActive={hasNext}
+                        disabled={!hasNext}
+                    >
+                        next
+                    </Button>
+                </Pagination>
             </PageLayout>
         </PageLayout>
     );
