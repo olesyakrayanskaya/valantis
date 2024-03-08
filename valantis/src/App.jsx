@@ -41,26 +41,29 @@ function App() {
     }
 
     function loadPage(offset, limit) {
+        console.log(new Date() + 'load page start');
         const newProducts = {
             action: 'get_ids',
             params: { offset: offset, limit: limit },
         };
 
         loadData(newProducts).then((data) => {
+            console.log(new Date() + 'load page 1');
             const uniqIds = uniq(data.result, (id) => id);
             const getItemsRequest = {
                 action: 'get_items',
                 params: { ids: uniqIds },
             };
-            if (uniqIds.length < pageLimit) {
+            if (data.result.length < pageLimit) {
                 setHasNext(false);
             }
-            if (uniqIds.length === 0) {
+            if (data.result.length === 0) {
                 setPageNumber(pageNumber - 1);
             }
             setIsLoading(true);
             loadData(getItemsRequest)
                 .then((d) => {
+                    console.log(new Date() + 'load page 2');
                     const uniqProducts = uniq(d.result, (p) => p.id);
                     setProducts(uniqProducts);
                 })
@@ -100,7 +103,10 @@ function App() {
         });
     }
 
+    console.log(new Date() + 'main');
+
     useEffect(() => {
+        console.log(new Date() + 'use effect');
         if (filterName !== 'all') {
             if (filterName === 'price') {
                 loadPageFiltered(
@@ -112,6 +118,7 @@ function App() {
         } else {
             loadPage(pageNumber, pageLimit);
         }
+        console.log(new Date() + 'use effect end');
     }, [filterName, filterQuery, pageNumber]);
 
     return (
@@ -145,29 +152,31 @@ function App() {
             <PageLayout>
                 {isLoading && <p>loading...</p>}
                 <ProductsSection products={products} isLoading={isLoading} />
-                <Pagination>
-                    <Button
-                        onClick={() => {
-                            pageNumber > 0
-                                ? setPageNumber(pageNumber - 1)
-                                : setPageNumber(0);
-                            setHasNext(true);
-                        }}
-                        isActive={pageNumber > 0}
-                        disabled={pageNumber === 0}
-                    >
-                        prev
-                    </Button>
-                    <Button
-                        onClick={() => {
-                            setPageNumber(pageNumber + 1);
-                        }}
-                        isActive={hasNext}
-                        disabled={!hasNext}
-                    >
-                        next
-                    </Button>
-                </Pagination>
+                {filterName === 'all' && (
+                    <Pagination>
+                        <Button
+                            onClick={() => {
+                                pageNumber > 0
+                                    ? setPageNumber(pageNumber - 1)
+                                    : setPageNumber(0);
+                                setHasNext(true);
+                            }}
+                            isActive={pageNumber > 0}
+                            disabled={pageNumber === 0}
+                        >
+                            prev
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setPageNumber(pageNumber + 1);
+                            }}
+                            isActive={hasNext}
+                            disabled={!hasNext}
+                        >
+                            next
+                        </Button>
+                    </Pagination>
+                )}
             </PageLayout>
         </PageLayout>
     );
