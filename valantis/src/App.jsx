@@ -130,7 +130,7 @@ function App() {
                         products={products}
                         isLoading={isLoading}
                     />
-                    {filterName === 'all' && (
+                    {filterName === 'all' && products.length > 0 && (
                         <Pagination>
                             <Button
                                 onClick={() => {
