@@ -1,10 +1,9 @@
 import md5 from 'crypto-js/md5';
 
 export default function getPassword() {
-    const password = 'Valantis';
     const now = new Date();
     const passString =
-        password +
+        process.env.REACT_APP_PASSWORD +
         '_' +
         now.getUTCFullYear() +
         String(now.getUTCMonth() + 1).padStart(2, '0') +

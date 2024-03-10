@@ -2,7 +2,6 @@ import ProductsSection from './components/ProductsSection/ProductsSection';
 import FiltersSection from './components/FiltersSection/FiltersSection';
 import PageLayout from './components/PageLayout/PageLayout';
 import Header from './components/Header/Header';
-import Logo from './components/Logo/Logo';
 import Loader from './components/Loader/Loader';
 import Input from './components/UI/Input/Input';
 import './App.css';
@@ -22,7 +21,6 @@ function App() {
     const [pageNumber, setPageNumber] = useState(0);
     const [hasNext, setHasNext] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
-    const pageLimit = 50;
 
     useEffect(() => {
         function loadPage(offset, limit) {
@@ -37,7 +35,7 @@ function App() {
                     action: 'get_items',
                     params: { ids: uniqIds },
                 };
-                if (data.result.length < pageLimit) {
+                if (data.result.length < process.env.REACT_APP_PAGE_LIMIT) {
                     setHasNext(false);
                 }
                 if (data.result.length === 0) {
@@ -50,7 +48,7 @@ function App() {
                         setProducts(uniqProducts);
                     })
                     .catch((err) => {
-                        console.error(err.message + ' aaaaaaaaaa');
+                        console.error(err.message);
                     })
                     .finally(() => {
                         setIsLoading(false);
@@ -77,7 +75,7 @@ function App() {
                         setProducts(uniqProducts);
                     })
                     .catch((err) => {
-                        console.error(err.message + ' aaaaaaaaaa');
+                        console.error(err.message);
                     })
                     .finally(() => {
                         setIsLoading(false);
@@ -93,13 +91,13 @@ function App() {
             }
             loadPageFiltered(filterName, filterQuery);
         } else {
-            loadPage(pageNumber, pageLimit);
+            loadPage(pageNumber, process.env.REACT_APP_PAGE_LIMIT);
         }
     }, [filterName, filterQuery, pageNumber]);
 
     return (
         <>
-            <Header><Logo /></Header>
+            <Header></Header>
             <FiltersSection>
                 <Select
                     options={[
@@ -144,7 +142,12 @@ function App() {
                                 isActive={pageNumber > 0}
                                 disabled={pageNumber === 0}
                             >
-                                <img src={prev} alt="button prev" width={100} height={30}/>
+                                <img
+                                    src={prev}
+                                    alt="button prev"
+                                    width={100}
+                                    height={30}
+                                />
                             </Button>
                             <Button
                                 onClick={() => {
@@ -153,7 +156,12 @@ function App() {
                                 isActive={hasNext}
                                 disabled={!hasNext}
                             >
-                                <img src={next} alt="button next" width={100} height={30}/>
+                                <img
+                                    src={next}
+                                    alt="button next"
+                                    width={100}
+                                    height={30}
+                                />
                             </Button>
                         </Pagination>
                     )}
