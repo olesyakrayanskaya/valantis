@@ -88,8 +88,9 @@ function App() {
                     filterName,
                     parseFloat(filterQuery.replaceAll(' ', ''))
                 );
+            } else {
+                loadPageFiltered(filterName, filterQuery);
             }
-            loadPageFiltered(filterName, filterQuery);
         } else {
             loadPage(pageNumber, process.env.REACT_APP_PAGE_LIMIT);
         }
