@@ -26,7 +26,7 @@ function App() {
         function loadPage(offset, limit) {
             const newProducts = {
                 action: 'get_ids',
-                params: { offset: offset, limit: limit },
+                params: { offset: offset, limit: Number(limit) },
             };
 
             loadData(newProducts).then((data) => {
