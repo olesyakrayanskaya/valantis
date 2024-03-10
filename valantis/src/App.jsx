@@ -5,7 +5,7 @@ import Header from './components/Header/Header';
 import Loader from './components/Loader/Loader';
 import Input from './components/UI/Input/Input';
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import loadData from './API/loadData';
 import Select from './components/UI/Select/Select';
 import Button from './components/UI/Button/Button';
@@ -13,6 +13,7 @@ import Pagination from './components/Pagination/Pagination';
 import uniq from './utils/uniq';
 import prev from './assets/images/prev.png';
 import next from './assets/images/next.png';
+import debounce from 'lodash.debounce';
 
 function App() {
     const [products, setProducts] = useState([]);
@@ -21,6 +22,7 @@ function App() {
     const [pageNumber, setPageNumber] = useState(0);
     const [hasNext, setHasNext] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
+    const [delayedFilterQuery, setDelayedFilterQuery] = useState('');
 
     useEffect(() => {
         function loadPage(offset, limit) {
@@ -82,19 +84,32 @@ function App() {
                     });
             });
         }
+
         if (filterName !== 'all') {
             if (filterName === 'price') {
                 loadPageFiltered(
                     filterName,
-                    parseFloat(filterQuery.replaceAll(' ', ''))
+                    parseFloat(delayedFilterQuery.replaceAll(' ', ''))
                 );
             } else {
-                loadPageFiltered(filterName, filterQuery);
+                loadPageFiltered(filterName, delayedFilterQuery);
             }
         } else {
             loadPage(pageNumber, process.env.REACT_APP_PAGE_LIMIT);
         }
-    }, [filterName, filterQuery, pageNumber]);
+    }, [delayedFilterQuery, pageNumber]);
+
+    useEffect(() => {
+        delayedQuery(filterQuery);
+    }, [filterQuery]);
+
+    function onChangeDebounce(q) {
+        q !== '' && q !== null && setDelayedFilterQuery(q);
+    }
+
+    const delayedQuery = useCallback(debounce(onChangeDebounce, 1500), [
+        filterQuery,
+    ]);
 
     return (
         <>
